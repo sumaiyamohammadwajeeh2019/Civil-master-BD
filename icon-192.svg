@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" viewBox="0 0 192 192">
+  <rect width="192" height="192" rx="42" fill="#0F172A"/>
+  <g fill="none" stroke="#FACC15" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M48 128 L96 68 L144 128"/>
+    <path d="M72 128 V108 H120 V128"/>
+    <path d="M38 142 H154"/>
+  </g>
+  <circle cx="96" cy="42" r="10" fill="#38BDF8"/>
+  <text x="96" y="172" text-anchor="middle" fill="white" font-size="16" font-weight="900" font-family="Arial">CIVILMASTER BD</text>
+</svg>

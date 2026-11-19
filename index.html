@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CivilMaster BD - Civil Engineering App</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0F172A">
+<link rel="icon" href="icon-192.svg">
+<style>
+*{box-sizing:border-box;font-family:Arial,sans-serif}
+body{background:#eef2f7;margin:0;padding:10px}
+.card{max-width:580px;margin:auto;background:#fff;border-radius:18px;padding:16px;box-shadow:0 6px 24px rgba(0,0,0,.12)}
+.header{text-align:center}
+.logo{width:72px;height:72px;margin:auto}
+h1{font-size:22px;margin:6px 0 0;color:#0F172A}
+.sub{font-size:12px;color:#64748b}
+.tabs{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:14px 0}
+.tabs button{padding:8px 11px;border:none;border-radius:20px;background:#e2e8f0;font-size:12px;cursor:pointer;font-weight:bold}
+.tabs button.active{background:#0F172A;color:#fff}
+label{font-size:13px;font-weight:bold;display:block;margin-top:11px}
+input,select{width:100%;padding:11px;border:1px solid #cbd5e1;border-radius:9px;margin-top:4px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.check{margin-top:10px;background:#f8fafc;padding:10px;border-radius:10px}
+.check label{font-weight:normal;display:flex;gap:8px;align-items:center;margin:6px 0;font-size:13px}
+.calc{width:100%;padding:13px;background:#0F172A;color:#fff;border:none;border-radius:10px;margin-top:15px;font-weight:bold;font-size:15px;cursor:pointer}
+.out{margin-top:12px;background:#f8fafc;padding:12px;border-radius:10px;font-size:14px;line-height:1.7;display:none}
+.score{font-size:36px;font-weight:900;text-align:center}
+.badge{display:block;text-align:center;padding:7px;border-radius:20px;font-weight:bold;font-size:13px;margin:6px 0}
+.safe{background:#dcfce7;color:#166534}.risky{background:#fef9c3;color:#854d0e}.danger{background:#fee2e2;color:#991b1b}
+table{width:100%;font-size:13px;border-collapse:collapse} td{padding:6px;border-bottom:1px solid #e2e8f0}
+.footer{text-align:center;font-size:11px;color:#94a3b8;margin-top:12px}
+.print{width:100%;padding:11px;background:#fff;border:1px solid #0F172A;border-radius:10px;margin-top:8px;font-weight:bold}
+</style>
+</head>
+<body>
+<div class="card">
+<div class="header">
+<div class="logo">
+<svg viewBox="0 0 192 192" width="72" height="72"><rect width="192" height="192" rx="42" fill="#0F172A"/><g fill="none" stroke="#FACC15" stroke-width="7" stroke-linecap="round"><path d="M48 128 L96 68 L144 128"/><path d="M72 128 V108 H120 V128"/><path d="M38 142 H154"/></g><circle cx="96" cy="42" r="10" fill="#38BDF8"/><text x="96" y="172" text-anchor="middle" fill="white" font-size="16" font-weight="900" font-family="Arial">CIVILMASTER BD</text></svg>
+</div>
+<h1>CivilMaster BD</h1>
+<div class="sub">Civil Engineering | Structural Design | Seismic Audit</div>
+</div>
+
+<div class="tabs">
+<button class="active" onclick="show('audit',this)">🏠 Seismic Audit</button>
+<button onclick="show('rcc',this)">🧱 RCC</button>
+<button onclick="show('geo',this)">🌍 Geotech</button>
+<button onclick="show('struct',this)">🏗️ Structural</button>
+<button onclick="show('bridge',this)">🌉 Bridge</button>
+<button onclick="show('water',this)">💧 Water</button>
+<button onclick="show('road',this)">🛣️ Road</button>
+</div>
+
+<!-- AUDIT -->
+<div id="audit" class="page">
+<label>Client / Building Name</label><input id="bName" placeholder="Ex: Rahman Villa, Dhaka">
+<div class="row"><div><label>Building Age</label><input id="age" type="number" value="20"></div><div><label>Total Floor</label><input id="floor" type="number" value="5"></div></div>
+<div class="row"><div><label>Soil</label><select id="soil"><option value="5">Hard Soil</option><option value="12">Medium Soil</option><option value="20">Soft / Vora Mati</option></select></div><div><label>Seismic Zone</label><select id="zone"><option value="5">Zone-1 Low</option><option value="12" selected>Zone-2 Medium</option><option value="20">Zone-3 High</option></select></div></div>
+<label>Design Code</label><select id="code"><option value="0">BNBC 2020 - Approved</option><option value="10">BNBC 1993 - Purono</option><option value="18">Kono Design Nai</option></select>
+<div class="check"><b>⚠️ Problem Checklist:</b>
+<label><input type="checkbox" class="prob" value="12"> Column/Beam e Boro Crack</label>
+<label><input type="checkbox" class="prob" value="10"> Wall e Diagonal Crack (45°)</label>
+<label><input type="checkbox" class="prob" value="10"> Rod e Jong / Concrete Khose Porche</label>
+<label><input type="checkbox" class="prob" value="8"> Building Hela Geche</label>
+<label><input type="checkbox" class="prob" value="12"> Pore Extra Floor Barano Hoiche</label>
+<label><input type="checkbox" class="prob" value="8"> Foundation e Pani Jome</label>
+</div>
+<button class="calc" onclick="calcAudit()">🔍 AUDIT CALCULATE</button>
+<div id="outAudit" class="out"></div>
+</div>
+
+<!-- RCC -->
+<div id="rcc" class="page" style="display:none">
+<label>Area (sqft)</label><input id="area" type="number" value="1000">
+<label>Ratio</label><select id="ratio"><option>M20 - 1:1.5:3 (Column/Beam)</option><option>M15 - 1:2:4 (Slab)</option><option>M10 - 1:3:6 (PCC)</option></select>
+<label>Thickness (inch)</label><input id="thick" type="number" value="5">
+<button class="calc" onclick="calcRCC()">Calculate RCC</button>
+<div id="outRCC" class="out"></div>
+</div>
+
+<!-- GEO -->
+<div id="geo" class="page" style="display:none">
+<label>Soil Capacity</label><select id="soilG"><option value="2">Soft Clay - 2 ton/sft</option><option value="3" selected>Medium - 3 ton/sft</option><option value="5">Hard - 5 ton/sft</option></select>
+<label>Column Load (Ton)</label><input id="loadG" type="number" value="80">
+<button class="calc" onclick="calcGeo()">Foundation Size</button>
+<div id="outGeo" class="out"></div>
+</div>
+
+<!-- STRUCT -->
+<div id="struct" class="page" style="display:none">
+<label>Beam Span (ft)</label><input id="span" type="number" value="15">
+<label>Load (kips/ft)</label><input id="loadS" type="number" value="2">
+<button class="calc" onclick="calcStruct()">Beam Moment</button>
+<div id="outStruct" class="out"></div>
+</div>
+
+<!-- BRIDGE -->
+<div id="bridge" class="page" style="display:none">
+<label>Bridge Span (m)</label><input id="bspan" type="number" value="20">
+<label>Bridge Type</label><select id="btype"><option>Simply Supported RCC Girder</option><option>Box Girder</option><option>Steel Truss</option><option>Slab Bridge</option></select>
+<button class="calc" onclick="calcBridge()">Bridge Suggestion</button>
+<div id="outBridge" class="out"></div>
+</div>
+
+<!-- WATER -->
+<div id="water" class="page" style="display:none">
+<label>Manush Koyjon</label><input id="people" type="number" value="20">
+<label>Litre / Person / Day</label><input id="litre" type="number" value="120">
+<button class="calc" onclick="calcWater()">Water Tank Size</button>
+<div id="outWater" class="out"></div>
+</div>
+
+<!-- ROAD -->
+<div id="road" class="page" style="display:none">
+<label>Road Length (km)</label><input id="rlen" type="number" value="1">
+<label>Road Width (ft)</label><input id="rwid" type="number" value="12">
+<button class="calc" onclick="calcRoad()">Road Estimate</button>
+<div id="outRoad" class="out"></div>
+</div>
+
+<div class="footer">CivilMaster BD | Structural Design Consultant | Seismic Fitness Auditor</div>
+</div>
+
+<script>
+function show(id,btn){document.querySelectorAll('.page').forEach(p=>p.style.display='none');document.getElementById(id).style.display='block';document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('active'));btn.classList.add('active')}
+function calcAudit(){let risk=0;let age=+document.getElementById('age').value||0;let floor=+document.getElementById('floor').value||0;risk+=+document.getElementById('soil').value;risk+=+document.getElementById('zone').value;risk+=+document.getElementById('code').value;if(age>30)risk+=12;else if(age>15)risk+=7;if(floor>7)risk+=10;else if(floor>4)risk+=5;document.querySelectorAll('.prob').forEach(c=>{if(c.checked)risk+=+c.value});let score=Math.max(5,100-risk);let o=document.getElementById('outAudit');o.style.display='block';let cls=score>=75?'safe':score>=50?'risky':'danger';let txt=score>=75?'✅ SAFE - FIT ACHE':score>=50?'⚠️ RISKY - RETROFITTING LAGTE PARE':'🛑 DANGEROUS - JORURI ACTION';let rec=score>=75?'Niyomito maintenance korlei hobe.':score>=50?'Detail Audit + Retrofitting Design Korun.':'Obilombe Engineer dekhan.';o.innerHTML=`<div class="score">${score}/100</div><span class="badge ${cls}">${txt}</span><table><tr><td>Building</td><td>${document.getElementById('bName').value||'N/A'}</td></tr><tr><td>Risk Points</td><td>${risk}</td></tr><tr><td>Recommendation</td><td>${rec}</td></tr></table><button class="print" onclick="window.print()">🖨️ Report Print / PDF</button>`;window.scrollTo(0,document.body.scrollHeight)}
+function calcRCC(){let a=+document.getElementById('area').value,t=+document.getElementById('thick').value/12;let vol=a*t;let o=document.getElementById('outRCC');o.style.display='block';o.innerHTML=`<b>Concrete: ${vol.toFixed(1)} cft</b><br>🏗️ Cement: ${(vol*0.35*28.8).toFixed(0)} bag<br>🏖️ Bali: ${(vol*0.45*35).toFixed(0)} cft<br>🧱 Khoa: ${(vol*0.9*35).toFixed(0)} cft<br>🔩 Rod: ${(vol*2.5).toFixed(0)} kg<br>Ratio: ${document.getElementById('ratio').value}`;}
+function calcGeo(){let cap=+document.getElementById('soilG').value,load=+document.getElementById('loadG').value;let area=load/cap,side=Math.sqrt(area);let o=document.getElementById('outGeo');o.style.display='block';o.innerHTML=`<b>Foundation Area: ${area.toFixed(1)} sft</b><br>Square Footing: ${side.toFixed(1)} ft x ${side.toFixed(1)} ft<br>Soil: ${cap} ton/sft`;}
+function calcStruct(){let L=+document.getElementById('span').value,w=+document.getElementById('loadS').value;let M=w*L*L/8,V=w*L/2;let o=document.getElementById('outStruct');o.style.display='block';o.innerHTML=`<b>Max Moment: ${M.toFixed(2)} kip-ft</b><br>Max Shear: ${V.toFixed(2)} kips<br>Beam Depth: ${(L*12/16).toFixed(0)} inch`;}
+function calcBridge(){let s=+document.getElementById('bspan').value;let o=document.getElementById('outBridge');o.style.display='block';o.innerHTML=`<b>Span: ${s}m | ${document.getElementById('btype').value}</b><br>${s<10?'Slab Bridge best, khoroch kom.':s<25?'RCC Girder Bridge best.':s<60?'Prestressed / Box Girder lagbe.':'Steel Truss / Arch Bridge lagbe.'}<br>Approx Depth: ${(s*100/16).toFixed(0)} cm`;}
+function calcWater(){let p=+document.getElementById('people').value,l=+document.getElementById('litre').value;let total=p*l;let o=document.getElementById('outWater');o.style.display='block';o.innerHTML=`<b>Daily Pani: ${total} Litre</b><br>Overhead Tank: ${(total*1.5/1000).toFixed(2)} m³<br>Underground: ${(total/1000).toFixed(2)} m³`;}
+function calcRoad(){let km=+document.getElementById('rlen').value,w=+document.getElementById('rwid').value;let area=km*3280*w;let o=document.getElementById('outRoad');o.style.display='block';o.innerHTML=`<b>Road Area: ${area.toFixed(0)} sft</b><br>Bitumen: ${(area*0.12).toFixed(0)} kg<br>Estimate: ${(area*120).toFixed(0)} Taka`;}
+if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js')}
+</script>
+</body>
+</html>
